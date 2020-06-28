@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	orders "toet.com/ahihi/pb"
+	orders "toet.io/mockom/pb"
 )
 
 
@@ -37,12 +37,16 @@ func (O OMV3MockServer) RecordPaymentIPN(ctx context.Context, request *orders.Re
 	code := request.Amount % 1000
 
 	if err, ok := mapErr[code]; ok {
-		return &orders.RecordPaymentIPNResponse{
+		resp := &orders.RecordPaymentIPNResponse{
 			Code:    err["code"],
 			Message: err["msg"],
 			TraceId: "trace-id",
-		}, nil
+		}
+		log.Printf("return %#v\n", resp)
+		return resp, nil
 	}
+
+	log.Fatal("error")
 
 	return nil, errors.New("merchant internal err")
 }
@@ -74,5 +78,7 @@ func main() {
 	orders.RegisterOrderCapturingServiceServer(s, omv3Server)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
+	} else {
+		log.Println("serve on 11111")
 	}
 }
