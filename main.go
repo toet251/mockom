@@ -32,6 +32,8 @@ func (O OMV3MockServer) RecordPaymentIPN(ctx context.Context, request *orders.Re
 		500: {"code": "500", "msg": "Lỗi hệ thống"},
 		503: {"code": "503", "msg": "Hệ thống đang bảo trì"},
 		600: {"code": "600", "msg": "Lỗi ngoài danh mục mô tả"},
+
+		412: {"code": "412", "msg": "ABC XYZ"},
 	}
 
 	code := request.Amount % 1000
