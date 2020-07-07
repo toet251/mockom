@@ -6,3 +6,5 @@ services:
     ports:
     - 11111:11111
     restart: always
+    volumes:
+    - ./server.log:/logs/server.log

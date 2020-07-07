@@ -62,17 +62,18 @@ func (O OMV3MockServer) InternalRecordPaymentIPN(ctx context.Context, request *I
 
 	code := request.Amount % 1000
 
+	log.Printf("Receive: %#v\n", request)
 	if err, ok := mapErr[code]; ok {
 		resp := &InternalRecordPaymentIPNResponse{
 			Code:    err["code"],
 			Message: err["msg"],
 			TraceId: "trace-id",
 		}
-		log.Printf("return %#v\n", resp)
+		log.Printf("Return %#v\n", resp)
 		return resp, nil
 	}
 
-	log.Fatal("error")
+	log.Printf("Return error")
 
 	return nil, errors.New("merchant internal err")
 }
