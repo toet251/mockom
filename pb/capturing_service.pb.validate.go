@@ -36,24 +36,151 @@ var (
 // define the regex for a UUID once up-front
 var _capturing_service_uuidPattern = regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 
-// Validate checks the field values on ChangeCODPaymentResponse with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on PrivateCaptureOrderRequest with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
-func (m *ChangeCODPaymentResponse) Validate() error {
+func (m *PrivateCaptureOrderRequest) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	// no validation rules for Code
+	if v, ok := interface{}(m.GetCustomer()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateCaptureOrderRequestValidationError{
+				field:  "Customer",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
-	// no validation rules for Message
+	if len(m.GetItems()) < 1 {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "Items",
+			reason: "value must contain at least 1 item(s)",
+		}
+	}
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrivateCaptureOrderRequestValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if v, ok := interface{}(m.GetBillingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateCaptureOrderRequestValidationError{
+				field:  "BillingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if v, ok := interface{}(m.GetShippingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateCaptureOrderRequestValidationError{
+				field:  "ShippingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetNote()) > 255 {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "Note",
+			reason: "value length must be at most 255 runes",
+		}
+	}
+
+	// no validation rules for GrandTotal
+
+	if utf8.RuneCountInString(m.GetPartnerRefCode()) > 50 {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "PartnerRefCode",
+			reason: "value length must be at most 50 runes",
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetRefCode()) > 50 {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "RefCode",
+			reason: "value length must be at most 50 runes",
+		}
+	}
+
+	if l := utf8.RuneCountInString(m.GetTerminalCode()); l < 1 || l > 50 {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "TerminalCode",
+			reason: "value length must be between 1 and 50 runes, inclusive",
+		}
+	}
+
+	for idx, item := range m.GetPromotions() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrivateCaptureOrderRequestValidationError{
+					field:  fmt.Sprintf("Promotions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if v, ok := interface{}(m.GetLoyalty()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateCaptureOrderRequestValidationError{
+				field:  "Loyalty",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if v, ok := interface{}(m.GetCodPayment()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateCaptureOrderRequestValidationError{
+				field:  "CodPayment",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if _, ok := _PrivateCaptureOrderRequest_DeliveryType_NotInLookup[m.GetDeliveryType()]; ok {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "DeliveryType",
+			reason: "value must not be in list [0]",
+		}
+	}
+
+	if _, ok := DeliveryType_name[int32(m.GetDeliveryType())]; !ok {
+		return PrivateCaptureOrderRequestValidationError{
+			field:  "DeliveryType",
+			reason: "value must be one of the defined enum values",
+		}
+	}
 
 	return nil
 }
 
-// ChangeCODPaymentResponseValidationError is the validation error returned by
-// ChangeCODPaymentResponse.Validate if the designated constraints aren't met.
-type ChangeCODPaymentResponseValidationError struct {
+// PrivateCaptureOrderRequestValidationError is the validation error returned
+// by PrivateCaptureOrderRequest.Validate if the designated constraints aren't met.
+type PrivateCaptureOrderRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -61,24 +188,24 @@ type ChangeCODPaymentResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e ChangeCODPaymentResponseValidationError) Field() string { return e.field }
+func (e PrivateCaptureOrderRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ChangeCODPaymentResponseValidationError) Reason() string { return e.reason }
+func (e PrivateCaptureOrderRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ChangeCODPaymentResponseValidationError) Cause() error { return e.cause }
+func (e PrivateCaptureOrderRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ChangeCODPaymentResponseValidationError) Key() bool { return e.key }
+func (e PrivateCaptureOrderRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ChangeCODPaymentResponseValidationError) ErrorName() string {
-	return "ChangeCODPaymentResponseValidationError"
+func (e PrivateCaptureOrderRequestValidationError) ErrorName() string {
+	return "PrivateCaptureOrderRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ChangeCODPaymentResponseValidationError) Error() string {
+func (e PrivateCaptureOrderRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -90,14 +217,14 @@ func (e ChangeCODPaymentResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sChangeCODPaymentResponse.%s: %s%s",
+		"invalid %sPrivateCaptureOrderRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ChangeCODPaymentResponseValidationError{}
+var _ error = PrivateCaptureOrderRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -105,26 +232,47 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ChangeCODPaymentResponseValidationError{}
+} = PrivateCaptureOrderRequestValidationError{}
 
-// Validate checks the field values on CancelOrderResponse with the rules
-// defined in the proto definition for this message. If any rules are
+var _PrivateCaptureOrderRequest_DeliveryType_NotInLookup = map[DeliveryType]struct{}{
+	0: {},
+}
+
+// Validate checks the field values on InternalRecordPaymentIPNRequest with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
-func (m *CancelOrderResponse) Validate() error {
+func (m *InternalRecordPaymentIPNRequest) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	// no validation rules for Code
+	// no validation rules for TerminalCode
 
-	// no validation rules for Message
+	// no validation rules for MethodCode
+
+	// no validation rules for PartnerCode
+
+	// no validation rules for OrderCode
+
+	// no validation rules for Amount
+
+	// no validation rules for TransactionCode
+
+	// no validation rules for ResponseCode
+
+	// no validation rules for ResponseMessage
+
+	// no validation rules for PartnerTransactionCode
+
+	// no validation rules for Checksum
 
 	return nil
 }
 
-// CancelOrderResponseValidationError is the validation error returned by
-// CancelOrderResponse.Validate if the designated constraints aren't met.
-type CancelOrderResponseValidationError struct {
+// InternalRecordPaymentIPNRequestValidationError is the validation error
+// returned by InternalRecordPaymentIPNRequest.Validate if the designated
+// constraints aren't met.
+type InternalRecordPaymentIPNRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -132,24 +280,24 @@ type CancelOrderResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e CancelOrderResponseValidationError) Field() string { return e.field }
+func (e InternalRecordPaymentIPNRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CancelOrderResponseValidationError) Reason() string { return e.reason }
+func (e InternalRecordPaymentIPNRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CancelOrderResponseValidationError) Cause() error { return e.cause }
+func (e InternalRecordPaymentIPNRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CancelOrderResponseValidationError) Key() bool { return e.key }
+func (e InternalRecordPaymentIPNRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CancelOrderResponseValidationError) ErrorName() string {
-	return "CancelOrderResponseValidationError"
+func (e InternalRecordPaymentIPNRequestValidationError) ErrorName() string {
+	return "InternalRecordPaymentIPNRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CancelOrderResponseValidationError) Error() string {
+func (e InternalRecordPaymentIPNRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -161,14 +309,14 @@ func (e CancelOrderResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCancelOrderResponse.%s: %s%s",
+		"invalid %sInternalRecordPaymentIPNRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CancelOrderResponseValidationError{}
+var _ error = InternalRecordPaymentIPNRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -176,7 +324,1373 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CancelOrderResponseValidationError{}
+} = InternalRecordPaymentIPNRequestValidationError{}
+
+// Validate checks the field values on PrivateChangeCODPaymentRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateChangeCODPaymentRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetOrderCode()); l < 1 || l > 20 {
+		return PrivateChangeCODPaymentRequestValidationError{
+			field:  "OrderCode",
+			reason: "value length must be between 1 and 20 runes, inclusive",
+		}
+	}
+
+	if v, ok := interface{}(m.GetCodPayment()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateChangeCODPaymentRequestValidationError{
+				field:  "CodPayment",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateChangeCODPaymentRequestValidationError is the validation error
+// returned by PrivateChangeCODPaymentRequest.Validate if the designated
+// constraints aren't met.
+type PrivateChangeCODPaymentRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateChangeCODPaymentRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateChangeCODPaymentRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateChangeCODPaymentRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateChangeCODPaymentRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateChangeCODPaymentRequestValidationError) ErrorName() string {
+	return "PrivateChangeCODPaymentRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateChangeCODPaymentRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateChangeCODPaymentRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateChangeCODPaymentRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateChangeCODPaymentRequestValidationError{}
+
+// Validate checks the field values on InternalGetOrderByCodeRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *InternalGetOrderByCodeRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetOrderCode()); l < 1 || l > 20 {
+		return InternalGetOrderByCodeRequestValidationError{
+			field:  "OrderCode",
+			reason: "value length must be between 1 and 20 runes, inclusive",
+		}
+	}
+
+	return nil
+}
+
+// InternalGetOrderByCodeRequestValidationError is the validation error
+// returned by InternalGetOrderByCodeRequest.Validate if the designated
+// constraints aren't met.
+type InternalGetOrderByCodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetOrderByCodeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetOrderByCodeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetOrderByCodeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetOrderByCodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetOrderByCodeRequestValidationError) ErrorName() string {
+	return "InternalGetOrderByCodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetOrderByCodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetOrderByCodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetOrderByCodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetOrderByCodeRequestValidationError{}
+
+// Validate checks the field values on PrivateGetOrderByCodeRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateGetOrderByCodeRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetOrderCode()); l < 1 || l > 20 {
+		return PrivateGetOrderByCodeRequestValidationError{
+			field:  "OrderCode",
+			reason: "value length must be between 1 and 20 runes, inclusive",
+		}
+	}
+
+	return nil
+}
+
+// PrivateGetOrderByCodeRequestValidationError is the validation error returned
+// by PrivateGetOrderByCodeRequest.Validate if the designated constraints
+// aren't met.
+type PrivateGetOrderByCodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateGetOrderByCodeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateGetOrderByCodeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateGetOrderByCodeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateGetOrderByCodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateGetOrderByCodeRequestValidationError) ErrorName() string {
+	return "PrivateGetOrderByCodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateGetOrderByCodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateGetOrderByCodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateGetOrderByCodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateGetOrderByCodeRequestValidationError{}
+
+// Validate checks the field values on PrivateCancelOrderRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateCancelOrderRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetOrderCode()); l < 1 || l > 20 {
+		return PrivateCancelOrderRequestValidationError{
+			field:  "OrderCode",
+			reason: "value length must be between 1 and 20 runes, inclusive",
+		}
+	}
+
+	// no validation rules for Reason
+
+	return nil
+}
+
+// PrivateCancelOrderRequestValidationError is the validation error returned by
+// PrivateCancelOrderRequest.Validate if the designated constraints aren't met.
+type PrivateCancelOrderRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateCancelOrderRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateCancelOrderRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateCancelOrderRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateCancelOrderRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateCancelOrderRequestValidationError) ErrorName() string {
+	return "PrivateCancelOrderRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateCancelOrderRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateCancelOrderRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateCancelOrderRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateCancelOrderRequestValidationError{}
+
+// Validate checks the field values on InternalListOrdersRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *InternalListOrdersRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for StateIn
+
+	// no validation rules for Offset
+
+	// no validation rules for Limit
+
+	return nil
+}
+
+// InternalListOrdersRequestValidationError is the validation error returned by
+// InternalListOrdersRequest.Validate if the designated constraints aren't met.
+type InternalListOrdersRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalListOrdersRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalListOrdersRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalListOrdersRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalListOrdersRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalListOrdersRequestValidationError) ErrorName() string {
+	return "InternalListOrdersRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalListOrdersRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalListOrdersRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalListOrdersRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalListOrdersRequestValidationError{}
+
+// Validate checks the field values on PrivateListOrdersRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateListOrdersRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for StateIn
+
+	// no validation rules for Offset
+
+	// no validation rules for Limit
+
+	return nil
+}
+
+// PrivateListOrdersRequestValidationError is the validation error returned by
+// PrivateListOrdersRequest.Validate if the designated constraints aren't met.
+type PrivateListOrdersRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateListOrdersRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateListOrdersRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateListOrdersRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateListOrdersRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateListOrdersRequestValidationError) ErrorName() string {
+	return "PrivateListOrdersRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateListOrdersRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateListOrdersRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateListOrdersRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateListOrdersRequestValidationError{}
+
+// Validate checks the field values on InternalScheduleOrderCommandRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, an error is returned.
+func (m *InternalScheduleOrderCommandRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for OrderId
+
+	// no validation rules for ExecutedAt
+
+	// no validation rules for Type
+
+	return nil
+}
+
+// InternalScheduleOrderCommandRequestValidationError is the validation error
+// returned by InternalScheduleOrderCommandRequest.Validate if the designated
+// constraints aren't met.
+type InternalScheduleOrderCommandRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalScheduleOrderCommandRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalScheduleOrderCommandRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalScheduleOrderCommandRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalScheduleOrderCommandRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalScheduleOrderCommandRequestValidationError) ErrorName() string {
+	return "InternalScheduleOrderCommandRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalScheduleOrderCommandRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalScheduleOrderCommandRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalScheduleOrderCommandRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalScheduleOrderCommandRequestValidationError{}
+
+// Validate checks the field values on PrivateCaptureOrderResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateCaptureOrderResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Code
+
+	// no validation rules for State
+
+	// no validation rules for GrandTotal
+
+	// no validation rules for ExpiredAt
+
+	return nil
+}
+
+// PrivateCaptureOrderResponseValidationError is the validation error returned
+// by PrivateCaptureOrderResponse.Validate if the designated constraints
+// aren't met.
+type PrivateCaptureOrderResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateCaptureOrderResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateCaptureOrderResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateCaptureOrderResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateCaptureOrderResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateCaptureOrderResponseValidationError) ErrorName() string {
+	return "PrivateCaptureOrderResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateCaptureOrderResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateCaptureOrderResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateCaptureOrderResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateCaptureOrderResponseValidationError{}
+
+// Validate checks the field values on InternalRecordPaymentIPNResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, an error is returned.
+func (m *InternalRecordPaymentIPNResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	// no validation rules for TraceId
+
+	return nil
+}
+
+// InternalRecordPaymentIPNResponseValidationError is the validation error
+// returned by InternalRecordPaymentIPNResponse.Validate if the designated
+// constraints aren't met.
+type InternalRecordPaymentIPNResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalRecordPaymentIPNResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalRecordPaymentIPNResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalRecordPaymentIPNResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalRecordPaymentIPNResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalRecordPaymentIPNResponseValidationError) ErrorName() string {
+	return "InternalRecordPaymentIPNResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalRecordPaymentIPNResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalRecordPaymentIPNResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalRecordPaymentIPNResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalRecordPaymentIPNResponseValidationError{}
+
+// Validate checks the field values on PrivateGetOrderByCodeResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateGetOrderByCodeResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetCustomer()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateGetOrderByCodeResponseValidationError{
+				field:  "Customer",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrivateGetOrderByCodeResponseValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Note
+
+	if v, ok := interface{}(m.GetBillingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateGetOrderByCodeResponseValidationError{
+				field:  "BillingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if v, ok := interface{}(m.GetShippingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PrivateGetOrderByCodeResponseValidationError{
+				field:  "ShippingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for GrandTotal
+
+	// no validation rules for RefCode
+
+	// no validation rules for PartnerRefCode
+
+	// no validation rules for TerminalCode
+
+	for idx, item := range m.GetPayments() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrivateGetOrderByCodeResponseValidationError{
+					field:  fmt.Sprintf("Payments[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Status
+
+	// no validation rules for DeliveryType
+
+	// no validation rules for PromotionDiscount
+
+	// no validation rules for PromotionTransactionId
+
+	return nil
+}
+
+// PrivateGetOrderByCodeResponseValidationError is the validation error
+// returned by PrivateGetOrderByCodeResponse.Validate if the designated
+// constraints aren't met.
+type PrivateGetOrderByCodeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateGetOrderByCodeResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateGetOrderByCodeResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateGetOrderByCodeResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateGetOrderByCodeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateGetOrderByCodeResponseValidationError) ErrorName() string {
+	return "PrivateGetOrderByCodeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateGetOrderByCodeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateGetOrderByCodeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateGetOrderByCodeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateGetOrderByCodeResponseValidationError{}
+
+// Validate checks the field values on InternalGetOrderByCodeResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *InternalGetOrderByCodeResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetCustomer()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalGetOrderByCodeResponseValidationError{
+				field:  "Customer",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalGetOrderByCodeResponseValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Note
+
+	if v, ok := interface{}(m.GetBillingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalGetOrderByCodeResponseValidationError{
+				field:  "BillingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if v, ok := interface{}(m.GetShippingInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalGetOrderByCodeResponseValidationError{
+				field:  "ShippingInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for GrandTotal
+
+	// no validation rules for RefCode
+
+	// no validation rules for PartnerRefCode
+
+	// no validation rules for TerminalCode
+
+	for idx, item := range m.GetPayments() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalGetOrderByCodeResponseValidationError{
+					field:  fmt.Sprintf("Payments[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Status
+
+	// no validation rules for DeliveryType
+
+	// no validation rules for PromotionDiscount
+
+	// no validation rules for PromotionTransactionId
+
+	return nil
+}
+
+// InternalGetOrderByCodeResponseValidationError is the validation error
+// returned by InternalGetOrderByCodeResponse.Validate if the designated
+// constraints aren't met.
+type InternalGetOrderByCodeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetOrderByCodeResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetOrderByCodeResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetOrderByCodeResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetOrderByCodeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetOrderByCodeResponseValidationError) ErrorName() string {
+	return "InternalGetOrderByCodeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetOrderByCodeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetOrderByCodeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetOrderByCodeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetOrderByCodeResponseValidationError{}
+
+// Validate checks the field values on InternalScheduleOrderCommandResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, an error is returned.
+func (m *InternalScheduleOrderCommandResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	return nil
+}
+
+// InternalScheduleOrderCommandResponseValidationError is the validation error
+// returned by InternalScheduleOrderCommandResponse.Validate if the designated
+// constraints aren't met.
+type InternalScheduleOrderCommandResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalScheduleOrderCommandResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalScheduleOrderCommandResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalScheduleOrderCommandResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalScheduleOrderCommandResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalScheduleOrderCommandResponseValidationError) ErrorName() string {
+	return "InternalScheduleOrderCommandResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalScheduleOrderCommandResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalScheduleOrderCommandResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalScheduleOrderCommandResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalScheduleOrderCommandResponseValidationError{}
+
+// Validate checks the field values on PrivateChangeCODPaymentResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateChangeCODPaymentResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	return nil
+}
+
+// PrivateChangeCODPaymentResponseValidationError is the validation error
+// returned by PrivateChangeCODPaymentResponse.Validate if the designated
+// constraints aren't met.
+type PrivateChangeCODPaymentResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateChangeCODPaymentResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateChangeCODPaymentResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateChangeCODPaymentResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateChangeCODPaymentResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateChangeCODPaymentResponseValidationError) ErrorName() string {
+	return "PrivateChangeCODPaymentResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateChangeCODPaymentResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateChangeCODPaymentResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateChangeCODPaymentResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateChangeCODPaymentResponseValidationError{}
+
+// Validate checks the field values on PrivateCancelOrderResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateCancelOrderResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	// no validation rules for Message
+
+	return nil
+}
+
+// PrivateCancelOrderResponseValidationError is the validation error returned
+// by PrivateCancelOrderResponse.Validate if the designated constraints aren't met.
+type PrivateCancelOrderResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateCancelOrderResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateCancelOrderResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateCancelOrderResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateCancelOrderResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateCancelOrderResponseValidationError) ErrorName() string {
+	return "PrivateCancelOrderResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateCancelOrderResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateCancelOrderResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateCancelOrderResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateCancelOrderResponseValidationError{}
+
+// Validate checks the field values on InternalListOrdersResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *InternalListOrdersResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Total
+
+	// no validation rules for Limit
+
+	// no validation rules for Offset
+
+	for idx, item := range m.GetOrders() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalListOrdersResponseValidationError{
+					field:  fmt.Sprintf("Orders[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// InternalListOrdersResponseValidationError is the validation error returned
+// by InternalListOrdersResponse.Validate if the designated constraints aren't met.
+type InternalListOrdersResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalListOrdersResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalListOrdersResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalListOrdersResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalListOrdersResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalListOrdersResponseValidationError) ErrorName() string {
+	return "InternalListOrdersResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalListOrdersResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalListOrdersResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalListOrdersResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalListOrdersResponseValidationError{}
+
+// Validate checks the field values on PrivateListOrdersResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *PrivateListOrdersResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Total
+
+	// no validation rules for Limit
+
+	// no validation rules for Offset
+
+	for idx, item := range m.GetOrders() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PrivateListOrdersResponseValidationError{
+					field:  fmt.Sprintf("Orders[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// PrivateListOrdersResponseValidationError is the validation error returned by
+// PrivateListOrdersResponse.Validate if the designated constraints aren't met.
+type PrivateListOrdersResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PrivateListOrdersResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PrivateListOrdersResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PrivateListOrdersResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PrivateListOrdersResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PrivateListOrdersResponseValidationError) ErrorName() string {
+	return "PrivateListOrdersResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PrivateListOrdersResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPrivateListOrdersResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PrivateListOrdersResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PrivateListOrdersResponseValidationError{}
 
 // Validate checks the field values on Loyalty with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
@@ -311,1109 +1825,3 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CODPaymentValidationError{}
-
-// Validate checks the field values on CaptureOrderRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *CaptureOrderRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	if v, ok := interface{}(m.GetCustomer()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CaptureOrderRequestValidationError{
-				field:  "Customer",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(m.GetItems()) < 1 {
-		return CaptureOrderRequestValidationError{
-			field:  "Items",
-			reason: "value must contain at least 1 item(s)",
-		}
-	}
-
-	for idx, item := range m.GetItems() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CaptureOrderRequestValidationError{
-					field:  fmt.Sprintf("Items[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if v, ok := interface{}(m.GetBillingInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CaptureOrderRequestValidationError{
-				field:  "BillingInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if v, ok := interface{}(m.GetShippingInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CaptureOrderRequestValidationError{
-				field:  "ShippingInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if utf8.RuneCountInString(m.GetNote()) > 255 {
-		return CaptureOrderRequestValidationError{
-			field:  "Note",
-			reason: "value length must be at most 255 runes",
-		}
-	}
-
-	// no validation rules for GrandTotal
-
-	if utf8.RuneCountInString(m.GetPartnerRefCode()) > 50 {
-		return CaptureOrderRequestValidationError{
-			field:  "PartnerRefCode",
-			reason: "value length must be at most 50 runes",
-		}
-	}
-
-	if utf8.RuneCountInString(m.GetRefCode()) > 50 {
-		return CaptureOrderRequestValidationError{
-			field:  "RefCode",
-			reason: "value length must be at most 50 runes",
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetTerminalCode()); l < 1 || l > 50 {
-		return CaptureOrderRequestValidationError{
-			field:  "TerminalCode",
-			reason: "value length must be between 1 and 50 runes, inclusive",
-		}
-	}
-
-	for idx, item := range m.GetPromotions() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CaptureOrderRequestValidationError{
-					field:  fmt.Sprintf("Promotions[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if v, ok := interface{}(m.GetLoyalty()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CaptureOrderRequestValidationError{
-				field:  "Loyalty",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if v, ok := interface{}(m.GetCodPayment()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CaptureOrderRequestValidationError{
-				field:  "CodPayment",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if _, ok := _CaptureOrderRequest_DeliveryType_NotInLookup[m.GetDeliveryType()]; ok {
-		return CaptureOrderRequestValidationError{
-			field:  "DeliveryType",
-			reason: "value must not be in list [0]",
-		}
-	}
-
-	if _, ok := DeliveryType_name[int32(m.GetDeliveryType())]; !ok {
-		return CaptureOrderRequestValidationError{
-			field:  "DeliveryType",
-			reason: "value must be one of the defined enum values",
-		}
-	}
-
-	return nil
-}
-
-// CaptureOrderRequestValidationError is the validation error returned by
-// CaptureOrderRequest.Validate if the designated constraints aren't met.
-type CaptureOrderRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CaptureOrderRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CaptureOrderRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CaptureOrderRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CaptureOrderRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CaptureOrderRequestValidationError) ErrorName() string {
-	return "CaptureOrderRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e CaptureOrderRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCaptureOrderRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CaptureOrderRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CaptureOrderRequestValidationError{}
-
-var _CaptureOrderRequest_DeliveryType_NotInLookup = map[DeliveryType]struct{}{
-	0: {},
-}
-
-// Validate checks the field values on CaptureOrderResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *CaptureOrderResponse) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Id
-
-	// no validation rules for Code
-
-	// no validation rules for State
-
-	// no validation rules for GrandTotal
-
-	// no validation rules for ExpiredAt
-
-	return nil
-}
-
-// CaptureOrderResponseValidationError is the validation error returned by
-// CaptureOrderResponse.Validate if the designated constraints aren't met.
-type CaptureOrderResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CaptureOrderResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CaptureOrderResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CaptureOrderResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CaptureOrderResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CaptureOrderResponseValidationError) ErrorName() string {
-	return "CaptureOrderResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e CaptureOrderResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCaptureOrderResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CaptureOrderResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CaptureOrderResponseValidationError{}
-
-// Validate checks the field values on RecordPaymentIPNRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *RecordPaymentIPNRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for TerminalCode
-
-	// no validation rules for MethodCode
-
-	// no validation rules for PartnerCode
-
-	// no validation rules for OrderCode
-
-	// no validation rules for Amount
-
-	// no validation rules for TransactionCode
-
-	// no validation rules for ResponseCode
-
-	// no validation rules for ResponseMessage
-
-	// no validation rules for PartnerTransactionCode
-
-	// no validation rules for Checksum
-
-	return nil
-}
-
-// RecordPaymentIPNRequestValidationError is the validation error returned by
-// RecordPaymentIPNRequest.Validate if the designated constraints aren't met.
-type RecordPaymentIPNRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e RecordPaymentIPNRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e RecordPaymentIPNRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e RecordPaymentIPNRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e RecordPaymentIPNRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e RecordPaymentIPNRequestValidationError) ErrorName() string {
-	return "RecordPaymentIPNRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e RecordPaymentIPNRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sRecordPaymentIPNRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = RecordPaymentIPNRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = RecordPaymentIPNRequestValidationError{}
-
-// Validate checks the field values on RecordPaymentIPNResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *RecordPaymentIPNResponse) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Code
-
-	// no validation rules for Message
-
-	// no validation rules for TraceId
-
-	return nil
-}
-
-// RecordPaymentIPNResponseValidationError is the validation error returned by
-// RecordPaymentIPNResponse.Validate if the designated constraints aren't met.
-type RecordPaymentIPNResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e RecordPaymentIPNResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e RecordPaymentIPNResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e RecordPaymentIPNResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e RecordPaymentIPNResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e RecordPaymentIPNResponseValidationError) ErrorName() string {
-	return "RecordPaymentIPNResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e RecordPaymentIPNResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sRecordPaymentIPNResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = RecordPaymentIPNResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = RecordPaymentIPNResponseValidationError{}
-
-// Validate checks the field values on ChangeCODPaymentRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *ChangeCODPaymentRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for OrderId
-
-	if v, ok := interface{}(m.GetCodPayment()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ChangeCODPaymentRequestValidationError{
-				field:  "CodPayment",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	return nil
-}
-
-// ChangeCODPaymentRequestValidationError is the validation error returned by
-// ChangeCODPaymentRequest.Validate if the designated constraints aren't met.
-type ChangeCODPaymentRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ChangeCODPaymentRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ChangeCODPaymentRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ChangeCODPaymentRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ChangeCODPaymentRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ChangeCODPaymentRequestValidationError) ErrorName() string {
-	return "ChangeCODPaymentRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ChangeCODPaymentRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sChangeCODPaymentRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ChangeCODPaymentRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ChangeCODPaymentRequestValidationError{}
-
-// Validate checks the field values on GetOrderByIdRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *GetOrderByIdRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for OrderId
-
-	return nil
-}
-
-// GetOrderByIdRequestValidationError is the validation error returned by
-// GetOrderByIdRequest.Validate if the designated constraints aren't met.
-type GetOrderByIdRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetOrderByIdRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetOrderByIdRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetOrderByIdRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetOrderByIdRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetOrderByIdRequestValidationError) ErrorName() string {
-	return "GetOrderByIdRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetOrderByIdRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetOrderByIdRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetOrderByIdRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetOrderByIdRequestValidationError{}
-
-// Validate checks the field values on GetOrderByIdResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *GetOrderByIdResponse) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	if v, ok := interface{}(m.GetCustomer()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetOrderByIdResponseValidationError{
-				field:  "Customer",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	for idx, item := range m.GetItems() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return GetOrderByIdResponseValidationError{
-					field:  fmt.Sprintf("Items[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	// no validation rules for Note
-
-	if v, ok := interface{}(m.GetBillingInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetOrderByIdResponseValidationError{
-				field:  "BillingInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if v, ok := interface{}(m.GetShippingInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetOrderByIdResponseValidationError{
-				field:  "ShippingInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for GrandTotal
-
-	// no validation rules for RefCode
-
-	// no validation rules for PartnerRefCode
-
-	// no validation rules for TerminalCode
-
-	for idx, item := range m.GetPayments() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return GetOrderByIdResponseValidationError{
-					field:  fmt.Sprintf("Payments[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	// no validation rules for Status
-
-	// no validation rules for DeliveryType
-
-	return nil
-}
-
-// GetOrderByIdResponseValidationError is the validation error returned by
-// GetOrderByIdResponse.Validate if the designated constraints aren't met.
-type GetOrderByIdResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetOrderByIdResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetOrderByIdResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetOrderByIdResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetOrderByIdResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetOrderByIdResponseValidationError) ErrorName() string {
-	return "GetOrderByIdResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetOrderByIdResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetOrderByIdResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetOrderByIdResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetOrderByIdResponseValidationError{}
-
-// Validate checks the field values on CancelOrderRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *CancelOrderRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for OrderId
-
-	// no validation rules for Reason
-
-	return nil
-}
-
-// CancelOrderRequestValidationError is the validation error returned by
-// CancelOrderRequest.Validate if the designated constraints aren't met.
-type CancelOrderRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CancelOrderRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CancelOrderRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CancelOrderRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CancelOrderRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CancelOrderRequestValidationError) ErrorName() string {
-	return "CancelOrderRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e CancelOrderRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCancelOrderRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CancelOrderRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CancelOrderRequestValidationError{}
-
-// Validate checks the field values on ListOrdersRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *ListOrdersRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for StateIn
-
-	// no validation rules for Offset
-
-	// no validation rules for Limit
-
-	return nil
-}
-
-// ListOrdersRequestValidationError is the validation error returned by
-// ListOrdersRequest.Validate if the designated constraints aren't met.
-type ListOrdersRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListOrdersRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListOrdersRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListOrdersRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListOrdersRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListOrdersRequestValidationError) ErrorName() string {
-	return "ListOrdersRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListOrdersRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListOrdersRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListOrdersRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListOrdersRequestValidationError{}
-
-// Validate checks the field values on ListOrdersResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *ListOrdersResponse) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Total
-
-	// no validation rules for Limit
-
-	// no validation rules for Offset
-
-	for idx, item := range m.GetOrders() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListOrdersResponseValidationError{
-					field:  fmt.Sprintf("Orders[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	return nil
-}
-
-// ListOrdersResponseValidationError is the validation error returned by
-// ListOrdersResponse.Validate if the designated constraints aren't met.
-type ListOrdersResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListOrdersResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListOrdersResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListOrdersResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListOrdersResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListOrdersResponseValidationError) ErrorName() string {
-	return "ListOrdersResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListOrdersResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListOrdersResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListOrdersResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListOrdersResponseValidationError{}
-
-// Validate checks the field values on InternalScheduleOrderCommandRequest with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, an error is returned.
-func (m *InternalScheduleOrderCommandRequest) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for OrderId
-
-	// no validation rules for ExecutedAt
-
-	// no validation rules for Type
-
-	return nil
-}
-
-// InternalScheduleOrderCommandRequestValidationError is the validation error
-// returned by InternalScheduleOrderCommandRequest.Validate if the designated
-// constraints aren't met.
-type InternalScheduleOrderCommandRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e InternalScheduleOrderCommandRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e InternalScheduleOrderCommandRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e InternalScheduleOrderCommandRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e InternalScheduleOrderCommandRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e InternalScheduleOrderCommandRequestValidationError) ErrorName() string {
-	return "InternalScheduleOrderCommandRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e InternalScheduleOrderCommandRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sInternalScheduleOrderCommandRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = InternalScheduleOrderCommandRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = InternalScheduleOrderCommandRequestValidationError{}
-
-// Validate checks the field values on InternalScheduleOrderCommandResponse
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, an error is returned.
-func (m *InternalScheduleOrderCommandResponse) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Code
-
-	// no validation rules for Message
-
-	return nil
-}
-
-// InternalScheduleOrderCommandResponseValidationError is the validation error
-// returned by InternalScheduleOrderCommandResponse.Validate if the designated
-// constraints aren't met.
-type InternalScheduleOrderCommandResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e InternalScheduleOrderCommandResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e InternalScheduleOrderCommandResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e InternalScheduleOrderCommandResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e InternalScheduleOrderCommandResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e InternalScheduleOrderCommandResponseValidationError) ErrorName() string {
-	return "InternalScheduleOrderCommandResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e InternalScheduleOrderCommandResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sInternalScheduleOrderCommandResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = InternalScheduleOrderCommandResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = InternalScheduleOrderCommandResponseValidationError{}

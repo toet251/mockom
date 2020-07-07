@@ -272,7 +272,8 @@ func (m *Customer) GetPhone() string {
 type Item struct {
 	LineItemId string `protobuf:"bytes,1,opt,name=line_item_id,json=lineItemId,proto3" json:"line_item_id,omitempty"`
 	Sku        string `protobuf:"bytes,2,opt,name=sku,proto3" json:"sku,omitempty"`
-	// quantity: can be discontinuity unit (eg: 1 or 2 unit) or continuity (eg: 12.34 kg, 0.01 liter)
+	// quantity: can be discontinuity unit (eg: 1 or 2 unit) or continuity
+	// (eg: 12.34 kg, 0.01 liter)
 	Quantity float64 `protobuf:"fixed64,3,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	// type: is this item product or service
 	Type ItemType `protobuf:"varint,4,opt,name=type,proto3,enum=orders.v3.ItemType" json:"type,omitempty"`
@@ -280,7 +281,8 @@ type Item struct {
 	UnitPrice uint64 `protobuf:"varint,5,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
 	// seller_id: seller of this item
 	SellerId uint32 `protobuf:"varint,6,opt,name=seller_id,json=sellerId,proto3" json:"seller_id,omitempty"`
-	// bundle_id is a reference to cluster multiple items to apply promotion on. using when promotion apply on bundles.
+	// bundle_id is a reference to cluster multiple items to apply promotion on.
+	// using when promotion apply on bundles.
 	BundleId             string   `protobuf:"bytes,7,opt,name=bundle_id,json=bundleId,proto3" json:"bundle_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -796,7 +798,8 @@ func (m *PromotionVoucher) GetQuantity() uint32 {
 
 // Promotion Schema
 type Promotion struct {
-	// promotion_id: identity of promotion. difference promotion type can have same id
+	// promotion_id: identity of promotion. difference promotion type can have
+	// same id
 	PromotionId int32 `protobuf:"varint,2,opt,name=promotion_id,json=promotionId,proto3" json:"promotion_id,omitempty"`
 	// type: promotion type
 	Type PromotionType `protobuf:"varint,3,opt,name=type,proto3,enum=orders.v3.PromotionType" json:"type,omitempty"`
@@ -810,7 +813,8 @@ type Promotion struct {
 	Gifts []*PromotionGift `protobuf:"bytes,7,rep,name=gifts,proto3" json:"gifts,omitempty"`
 	// apply_count: the number of time [...]
 	ApplyCount uint32 `protobuf:"varint,8,opt,name=apply_count,json=applyCount,proto3" json:"apply_count,omitempty"`
-	// voucher: number of vocher will be rewarded to customer (to be rename by PPM)
+	// voucher: number of vocher will be rewarded to customer (to be rename by
+	// PPM)
 	Voucher *PromotionVoucher `protobuf:"bytes,9,opt,name=voucher,proto3" json:"voucher,omitempty"`
 	// coupon: the coupon code apply in this promotion
 	Coupon string `protobuf:"bytes,10,opt,name=coupon,proto3" json:"coupon,omitempty"`
