@@ -1,4 +1,3 @@
-## Today ubuntu is using minimalized image by default, using ubuntu for better compatible than alpine
 FROM golang
 WORKDIR /toet
 COPY . /toet

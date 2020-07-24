@@ -52,7 +52,7 @@ func (O OMV3MockServer) InternalRecordPaymentIPN(ctx context.Context, request *I
 		200: {"code": "200", "msg": "Thành công"},
 		410: {"code": "410", "msg": "Sai checksum"},
 		411: {"code": "411", "msg": "Dữ liệu không đúng định dạng"},
-		421: {"code": "421", "msg": "Xử lý Đơn hàng không thành công <kèm mô tả chi tiết>"},
+		421: {"code": "421", "msg": "Xử lý Đơn hàng không thành công ...kèm mô tả chi tiết..."},
 		500: {"code": "500", "msg": "Lỗi hệ thống"},
 		503: {"code": "503", "msg": "Hệ thống đang bảo trì"},
 		600: {"code": "600", "msg": "Lỗi ngoài danh mục mô tả"},
