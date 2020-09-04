@@ -281,337 +281,6 @@ var _Item_Type_NotInLookup = map[ItemType]struct{}{
 	0: {},
 }
 
-// Validate checks the field values on BillingInfo with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *BillingInfo) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 255 {
-		return BillingInfoValidationError{
-			field:  "Name",
-			reason: "value length must be between 1 and 255 runes, inclusive",
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetAddress()); l < 1 || l > 255 {
-		return BillingInfoValidationError{
-			field:  "Address",
-			reason: "value length must be between 1 and 255 runes, inclusive",
-		}
-	}
-
-	if utf8.RuneCountInString(m.GetEmail()) < 1 {
-		return BillingInfoValidationError{
-			field:  "Email",
-			reason: "value length must be at least 1 runes",
-		}
-	}
-
-	if err := m._validateEmail(m.GetEmail()); err != nil {
-		return BillingInfoValidationError{
-			field:  "Email",
-			reason: "value must be a valid email address",
-			cause:  err,
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetTaxIdNumber()); l < 1 || l > 50 {
-		return BillingInfoValidationError{
-			field:  "TaxIdNumber",
-			reason: "value length must be between 1 and 50 runes, inclusive",
-		}
-	}
-
-	if utf8.RuneCountInString(m.GetPhone()) > 15 {
-		return BillingInfoValidationError{
-			field:  "Phone",
-			reason: "value length must be at most 15 runes",
-		}
-	}
-
-	if _, ok := _BillingInfo_Type_NotInLookup[m.GetType()]; ok {
-		return BillingInfoValidationError{
-			field:  "Type",
-			reason: "value must not be in list [0]",
-		}
-	}
-
-	if _, ok := TaxType_name[int32(m.GetType())]; !ok {
-		return BillingInfoValidationError{
-			field:  "Type",
-			reason: "value must be one of the defined enum values",
-		}
-	}
-
-	return nil
-}
-
-func (m *BillingInfo) _validateHostname(host string) error {
-	s := strings.ToLower(strings.TrimSuffix(host, "."))
-
-	if len(host) > 253 {
-		return errors.New("hostname cannot exceed 253 characters")
-	}
-
-	for _, part := range strings.Split(s, ".") {
-		if l := len(part); l == 0 || l > 63 {
-			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
-		}
-
-		if part[0] == '-' {
-			return errors.New("hostname parts cannot begin with hyphens")
-		}
-
-		if part[len(part)-1] == '-' {
-			return errors.New("hostname parts cannot end with hyphens")
-		}
-
-		for _, r := range part {
-			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
-				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
-			}
-		}
-	}
-
-	return nil
-}
-
-func (m *BillingInfo) _validateEmail(addr string) error {
-	a, err := mail.ParseAddress(addr)
-	if err != nil {
-		return err
-	}
-	addr = a.Address
-
-	if len(addr) > 254 {
-		return errors.New("email addresses cannot exceed 254 characters")
-	}
-
-	parts := strings.SplitN(addr, "@", 2)
-
-	if len(parts[0]) > 64 {
-		return errors.New("email address local phrase cannot exceed 64 characters")
-	}
-
-	return m._validateHostname(parts[1])
-}
-
-// BillingInfoValidationError is the validation error returned by
-// BillingInfo.Validate if the designated constraints aren't met.
-type BillingInfoValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e BillingInfoValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e BillingInfoValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e BillingInfoValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e BillingInfoValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e BillingInfoValidationError) ErrorName() string { return "BillingInfoValidationError" }
-
-// Error satisfies the builtin error interface
-func (e BillingInfoValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sBillingInfo.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = BillingInfoValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = BillingInfoValidationError{}
-
-var _BillingInfo_Type_NotInLookup = map[TaxType]struct{}{
-	0: {},
-}
-
-// Validate checks the field values on ShippingInfo with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *ShippingInfo) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 255 {
-		return ShippingInfoValidationError{
-			field:  "Name",
-			reason: "value length must be between 1 and 255 runes, inclusive",
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetPhone()); l < 1 || l > 15 {
-		return ShippingInfoValidationError{
-			field:  "Phone",
-			reason: "value length must be between 1 and 15 runes, inclusive",
-		}
-	}
-
-	if err := m._validateEmail(m.GetEmail()); err != nil {
-		return ShippingInfoValidationError{
-			field:  "Email",
-			reason: "value must be a valid email address",
-			cause:  err,
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetStreetAddress()); l < 1 || l > 255 {
-		return ShippingInfoValidationError{
-			field:  "StreetAddress",
-			reason: "value length must be between 1 and 255 runes, inclusive",
-		}
-	}
-
-	if l := utf8.RuneCountInString(m.GetAddressCode()); l < 1 || l > 6 {
-		return ShippingInfoValidationError{
-			field:  "AddressCode",
-			reason: "value length must be between 1 and 6 runes, inclusive",
-		}
-	}
-
-	// no validation rules for Note
-
-	// no validation rules for ExpectedDate
-
-	return nil
-}
-
-func (m *ShippingInfo) _validateHostname(host string) error {
-	s := strings.ToLower(strings.TrimSuffix(host, "."))
-
-	if len(host) > 253 {
-		return errors.New("hostname cannot exceed 253 characters")
-	}
-
-	for _, part := range strings.Split(s, ".") {
-		if l := len(part); l == 0 || l > 63 {
-			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
-		}
-
-		if part[0] == '-' {
-			return errors.New("hostname parts cannot begin with hyphens")
-		}
-
-		if part[len(part)-1] == '-' {
-			return errors.New("hostname parts cannot end with hyphens")
-		}
-
-		for _, r := range part {
-			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
-				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
-			}
-		}
-	}
-
-	return nil
-}
-
-func (m *ShippingInfo) _validateEmail(addr string) error {
-	a, err := mail.ParseAddress(addr)
-	if err != nil {
-		return err
-	}
-	addr = a.Address
-
-	if len(addr) > 254 {
-		return errors.New("email addresses cannot exceed 254 characters")
-	}
-
-	parts := strings.SplitN(addr, "@", 2)
-
-	if len(parts[0]) > 64 {
-		return errors.New("email address local phrase cannot exceed 64 characters")
-	}
-
-	return m._validateHostname(parts[1])
-}
-
-// ShippingInfoValidationError is the validation error returned by
-// ShippingInfo.Validate if the designated constraints aren't met.
-type ShippingInfoValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ShippingInfoValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ShippingInfoValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ShippingInfoValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ShippingInfoValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ShippingInfoValidationError) ErrorName() string { return "ShippingInfoValidationError" }
-
-// Error satisfies the builtin error interface
-func (e ShippingInfoValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sShippingInfo.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ShippingInfoValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ShippingInfoValidationError{}
-
 // Validate checks the field values on PaymentDetail with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -1206,3 +875,707 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SimplifiedOrderValidationError{}
+
+// Validate checks the field values on DeliveryInfo with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *DeliveryInfo) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for DeliveryMethod
+
+	// no validation rules for PickupPointCode
+
+	// no validation rules for ExpectedDate
+
+	// no validation rules for DeliveryType
+
+	// no validation rules for Note
+
+	return nil
+}
+
+// DeliveryInfoValidationError is the validation error returned by
+// DeliveryInfo.Validate if the designated constraints aren't met.
+type DeliveryInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeliveryInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeliveryInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeliveryInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeliveryInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeliveryInfoValidationError) ErrorName() string { return "DeliveryInfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DeliveryInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeliveryInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeliveryInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeliveryInfoValidationError{}
+
+// Validate checks the field values on ServiceFee with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *ServiceFee) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Type
+
+	// no validation rules for SubType
+
+	// no validation rules for Name
+
+	// no validation rules for Remote
+
+	// no validation rules for Fee
+
+	return nil
+}
+
+// ServiceFeeValidationError is the validation error returned by
+// ServiceFee.Validate if the designated constraints aren't met.
+type ServiceFeeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ServiceFeeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ServiceFeeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ServiceFeeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ServiceFeeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ServiceFeeValidationError) ErrorName() string { return "ServiceFeeValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ServiceFeeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sServiceFee.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ServiceFeeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ServiceFeeValidationError{}
+
+// Validate checks the field values on BillingInfo with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *BillingInfo) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 255 {
+		return BillingInfoValidationError{
+			field:  "Name",
+			reason: "value length must be between 1 and 255 runes, inclusive",
+		}
+	}
+
+	if l := utf8.RuneCountInString(m.GetAddress()); l < 1 || l > 255 {
+		return BillingInfoValidationError{
+			field:  "Address",
+			reason: "value length must be between 1 and 255 runes, inclusive",
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetEmail()) < 1 {
+		return BillingInfoValidationError{
+			field:  "Email",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	if err := m._validateEmail(m.GetEmail()); err != nil {
+		return BillingInfoValidationError{
+			field:  "Email",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+	}
+
+	if l := utf8.RuneCountInString(m.GetTaxCode()); l < 1 || l > 50 {
+		return BillingInfoValidationError{
+			field:  "TaxCode",
+			reason: "value length must be between 1 and 50 runes, inclusive",
+		}
+	}
+
+	if utf8.RuneCountInString(m.GetPhone()) > 15 {
+		return BillingInfoValidationError{
+			field:  "Phone",
+			reason: "value length must be at most 15 runes",
+		}
+	}
+
+	if _, ok := _BillingInfo_Type_NotInLookup[m.GetType()]; ok {
+		return BillingInfoValidationError{
+			field:  "Type",
+			reason: "value must not be in list [0]",
+		}
+	}
+
+	if _, ok := TaxType_name[int32(m.GetType())]; !ok {
+		return BillingInfoValidationError{
+			field:  "Type",
+			reason: "value must be one of the defined enum values",
+		}
+	}
+
+	// no validation rules for Note
+
+	return nil
+}
+
+func (m *BillingInfo) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *BillingInfo) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
+}
+
+// BillingInfoValidationError is the validation error returned by
+// BillingInfo.Validate if the designated constraints aren't met.
+type BillingInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BillingInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BillingInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BillingInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BillingInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BillingInfoValidationError) ErrorName() string { return "BillingInfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e BillingInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBillingInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BillingInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BillingInfoValidationError{}
+
+var _BillingInfo_Type_NotInLookup = map[TaxType]struct{}{
+	0: {},
+}
+
+// Validate checks the field values on ShippingInfo with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *ShippingInfo) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 255 {
+		return ShippingInfoValidationError{
+			field:  "Name",
+			reason: "value length must be between 1 and 255 runes, inclusive",
+		}
+	}
+
+	if l := utf8.RuneCountInString(m.GetPhone()); l < 1 || l > 15 {
+		return ShippingInfoValidationError{
+			field:  "Phone",
+			reason: "value length must be between 1 and 15 runes, inclusive",
+		}
+	}
+
+	if err := m._validateEmail(m.GetEmail()); err != nil {
+		return ShippingInfoValidationError{
+			field:  "Email",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+	}
+
+	if l := utf8.RuneCountInString(m.GetStreetAddress()); l < 1 || l > 255 {
+		return ShippingInfoValidationError{
+			field:  "StreetAddress",
+			reason: "value length must be between 1 and 255 runes, inclusive",
+		}
+	}
+
+	// no validation rules for WardId
+
+	// no validation rules for DistrictId
+
+	// no validation rules for ProvinceId
+
+	return nil
+}
+
+func (m *ShippingInfo) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *ShippingInfo) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
+}
+
+// ShippingInfoValidationError is the validation error returned by
+// ShippingInfo.Validate if the designated constraints aren't met.
+type ShippingInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ShippingInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ShippingInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ShippingInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ShippingInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ShippingInfoValidationError) ErrorName() string { return "ShippingInfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ShippingInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sShippingInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ShippingInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ShippingInfoValidationError{}
+
+// Validate checks the field values on CreditRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *CreditRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for GrossGrandTotal
+
+	// no validation rules for RequestorId
+
+	// no validation rules for DiscountAmount
+
+	// no validation rules for PayNowAmount
+
+	// no validation rules for CreditAmount
+
+	// no validation rules for DueAfterDelivery
+
+	return nil
+}
+
+// CreditRequestValidationError is the validation error returned by
+// CreditRequest.Validate if the designated constraints aren't met.
+type CreditRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreditRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreditRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreditRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreditRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreditRequestValidationError) ErrorName() string { return "CreditRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreditRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreditRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreditRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreditRequestValidationError{}
+
+// Validate checks the field values on CartPromotion with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *CartPromotion) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for DiscountAmount
+
+	// no validation rules for Value
+
+	// no validation rules for ValueType
+
+	// no validation rules for Coupon
+
+	// no validation rules for VoucherQuantity
+
+	return nil
+}
+
+// CartPromotionValidationError is the validation error returned by
+// CartPromotion.Validate if the designated constraints aren't met.
+type CartPromotionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CartPromotionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CartPromotionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CartPromotionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CartPromotionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CartPromotionValidationError) ErrorName() string { return "CartPromotionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CartPromotionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCartPromotion.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CartPromotionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CartPromotionValidationError{}
+
+// Validate checks the field values on CartItem with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *CartItem) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if l := utf8.RuneCountInString(m.GetSku()); l < 1 || l > 50 {
+		return CartItemValidationError{
+			field:  "Sku",
+			reason: "value length must be between 1 and 50 runes, inclusive",
+		}
+	}
+
+	// no validation rules for Quantity
+
+	return nil
+}
+
+// CartItemValidationError is the validation error returned by
+// CartItem.Validate if the designated constraints aren't met.
+type CartItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CartItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CartItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CartItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CartItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CartItemValidationError) ErrorName() string { return "CartItemValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CartItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCartItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CartItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CartItemValidationError{}

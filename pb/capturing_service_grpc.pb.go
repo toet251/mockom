@@ -17,25 +17,31 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderCapturingServiceClient interface {
-	// PrivateCaptureOrder capture order data to create a new order, use for
+	// CaptureInternalOrder capture order data to create a new order, use for
 	// everyone
-	PrivateCaptureOrder(ctx context.Context, in *PrivateCaptureOrderRequest, opts ...grpc.CallOption) (*PrivateCaptureOrderResponse, error)
-	// PrivateChangeCODPayment update current order to COD payment, for customer
-	PrivateChangeCODPayment(ctx context.Context, in *PrivateChangeCODPaymentRequest, opts ...grpc.CallOption) (*PrivateChangeCODPaymentResponse, error)
-	// PrivateGetOrderByCode get single order by its code, for customer
-	PrivateGetOrderByCode(ctx context.Context, in *PrivateGetOrderByCodeRequest, opts ...grpc.CallOption) (*PrivateGetOrderByCodeResponse, error)
-	// PrivateListOrders get list of order with filter, for customer
-	PrivateListOrders(ctx context.Context, in *PrivateListOrdersRequest, opts ...grpc.CallOption) (*PrivateListOrdersResponse, error)
-	// PrivateCancelOrder cancel an order, for customer
-	PrivateCancelOrder(ctx context.Context, in *PrivateCancelOrderRequest, opts ...grpc.CallOption) (*PrivateCancelOrderResponse, error)
-	// InternalRecordPaymentIPN receive payment of an order from Payment Service
-	InternalRecordPaymentIPN(ctx context.Context, in *InternalRecordPaymentIPNRequest, opts ...grpc.CallOption) (*InternalRecordPaymentIPNResponse, error)
-	// InternalGetOrderByCode get single order by its code, for internal user
-	InternalGetOrderByCode(ctx context.Context, in *InternalGetOrderByCodeRequest, opts ...grpc.CallOption) (*InternalGetOrderByCodeResponse, error)
-	// InternalListOrders get list of order with filter, for internal user
-	InternalListOrders(ctx context.Context, in *InternalListOrdersRequest, opts ...grpc.CallOption) (*InternalListOrdersResponse, error)
-	// InternalScheduleOrderCommand queuing an order command for later executing
-	InternalScheduleOrderCommand(ctx context.Context, in *InternalScheduleOrderCommandRequest, opts ...grpc.CallOption) (*InternalScheduleOrderCommandResponse, error)
+	CaptureInternalOrder(ctx context.Context, in *CaptureInternalOrderRequest, opts ...grpc.CallOption) (*CaptureInternalOrderResponse, error)
+	// CreateInternalOrder create a new order, use for
+	// everyone
+	CreateInternalOrder(ctx context.Context, in *CreateInternalOrderRequest, opts ...grpc.CallOption) (*CreateInternalOrderResponse, error)
+	// ChangeInternalCODPayment update current order to COD payment, for customer
+	ChangeInternalCODPayment(ctx context.Context, in *ChangeInternalCODPaymentRequest, opts ...grpc.CallOption) (*ChangeInternalCODPaymentResponse, error)
+	// GetInternalOrderByCode get single order by its code, for customer
+	GetInternalOrderByCode(ctx context.Context, in *GetInternalOrderByCodeRequest, opts ...grpc.CallOption) (*GetInternalOrderByCodeResponse, error)
+	// ListInternalOrders get list of order with filter, for customer
+	ListInternalOrders(ctx context.Context, in *ListInternalOrdersRequest, opts ...grpc.CallOption) (*ListInternalOrdersResponse, error)
+	// CancelInternalOrder cancel an order, for customer
+	CancelInternalOrder(ctx context.Context, in *CancelInternalOrderRequest, opts ...grpc.CallOption) (*CancelInternalOrderResponse, error)
+	// RecordInternalPaymentIPN receive payment of an order from Payment Service
+	RecordInternalPaymentIPN(ctx context.Context, in *RecordInternalPaymentIPNRequest, opts ...grpc.CallOption) (*RecordInternalPaymentIPNResponse, error)
+	// ScheduleInternalOrderCommand queuing an order command for later executing
+	ScheduleInternalOrderCommand(ctx context.Context, in *ScheduleInternalOrderCommandRequest, opts ...grpc.CallOption) (*ScheduleInternalOrderCommandResponse, error)
+	// CaptureInternalOrderFromCart capture order data to create a new order from
+	// cart service
+	CaptureInternalOrderFromCart(ctx context.Context, in *CaptureInternalOrderFromCartRequest, opts ...grpc.CallOption) (*CaptureInternalOrderFromCartResponse, error)
+	// UpdateInternalShippingInfo update shipping info
+	UpdateInternalShippingInfo(ctx context.Context, in *UpdateInternalShippingInfoRequest, opts ...grpc.CallOption) (*UpdateInternalShippingInfoResponse, error)
+	// UpdateInternalBillingInfo update billing info
+	UpdateInternalBillingInfo(ctx context.Context, in *UpdateInternalBillingInfoRequest, opts ...grpc.CallOption) (*UpdateInternalBillingInfoResponse, error)
 }
 
 type orderCapturingServiceClient struct {
@@ -46,81 +52,99 @@ func NewOrderCapturingServiceClient(cc grpc.ClientConnInterface) OrderCapturingS
 	return &orderCapturingServiceClient{cc}
 }
 
-func (c *orderCapturingServiceClient) PrivateCaptureOrder(ctx context.Context, in *PrivateCaptureOrderRequest, opts ...grpc.CallOption) (*PrivateCaptureOrderResponse, error) {
-	out := new(PrivateCaptureOrderResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/PrivateCaptureOrder", in, out, opts...)
+func (c *orderCapturingServiceClient) CaptureInternalOrder(ctx context.Context, in *CaptureInternalOrderRequest, opts ...grpc.CallOption) (*CaptureInternalOrderResponse, error) {
+	out := new(CaptureInternalOrderResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/CaptureInternalOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) PrivateChangeCODPayment(ctx context.Context, in *PrivateChangeCODPaymentRequest, opts ...grpc.CallOption) (*PrivateChangeCODPaymentResponse, error) {
-	out := new(PrivateChangeCODPaymentResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/PrivateChangeCODPayment", in, out, opts...)
+func (c *orderCapturingServiceClient) CreateInternalOrder(ctx context.Context, in *CreateInternalOrderRequest, opts ...grpc.CallOption) (*CreateInternalOrderResponse, error) {
+	out := new(CreateInternalOrderResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/CreateInternalOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) PrivateGetOrderByCode(ctx context.Context, in *PrivateGetOrderByCodeRequest, opts ...grpc.CallOption) (*PrivateGetOrderByCodeResponse, error) {
-	out := new(PrivateGetOrderByCodeResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/PrivateGetOrderByCode", in, out, opts...)
+func (c *orderCapturingServiceClient) ChangeInternalCODPayment(ctx context.Context, in *ChangeInternalCODPaymentRequest, opts ...grpc.CallOption) (*ChangeInternalCODPaymentResponse, error) {
+	out := new(ChangeInternalCODPaymentResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/ChangeInternalCODPayment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) PrivateListOrders(ctx context.Context, in *PrivateListOrdersRequest, opts ...grpc.CallOption) (*PrivateListOrdersResponse, error) {
-	out := new(PrivateListOrdersResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/PrivateListOrders", in, out, opts...)
+func (c *orderCapturingServiceClient) GetInternalOrderByCode(ctx context.Context, in *GetInternalOrderByCodeRequest, opts ...grpc.CallOption) (*GetInternalOrderByCodeResponse, error) {
+	out := new(GetInternalOrderByCodeResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/GetInternalOrderByCode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) PrivateCancelOrder(ctx context.Context, in *PrivateCancelOrderRequest, opts ...grpc.CallOption) (*PrivateCancelOrderResponse, error) {
-	out := new(PrivateCancelOrderResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/PrivateCancelOrder", in, out, opts...)
+func (c *orderCapturingServiceClient) ListInternalOrders(ctx context.Context, in *ListInternalOrdersRequest, opts ...grpc.CallOption) (*ListInternalOrdersResponse, error) {
+	out := new(ListInternalOrdersResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/ListInternalOrders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) InternalRecordPaymentIPN(ctx context.Context, in *InternalRecordPaymentIPNRequest, opts ...grpc.CallOption) (*InternalRecordPaymentIPNResponse, error) {
-	out := new(InternalRecordPaymentIPNResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/InternalRecordPaymentIPN", in, out, opts...)
+func (c *orderCapturingServiceClient) CancelInternalOrder(ctx context.Context, in *CancelInternalOrderRequest, opts ...grpc.CallOption) (*CancelInternalOrderResponse, error) {
+	out := new(CancelInternalOrderResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/CancelInternalOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) InternalGetOrderByCode(ctx context.Context, in *InternalGetOrderByCodeRequest, opts ...grpc.CallOption) (*InternalGetOrderByCodeResponse, error) {
-	out := new(InternalGetOrderByCodeResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/InternalGetOrderByCode", in, out, opts...)
+func (c *orderCapturingServiceClient) RecordInternalPaymentIPN(ctx context.Context, in *RecordInternalPaymentIPNRequest, opts ...grpc.CallOption) (*RecordInternalPaymentIPNResponse, error) {
+	out := new(RecordInternalPaymentIPNResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/RecordInternalPaymentIPN", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) InternalListOrders(ctx context.Context, in *InternalListOrdersRequest, opts ...grpc.CallOption) (*InternalListOrdersResponse, error) {
-	out := new(InternalListOrdersResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/InternalListOrders", in, out, opts...)
+func (c *orderCapturingServiceClient) ScheduleInternalOrderCommand(ctx context.Context, in *ScheduleInternalOrderCommandRequest, opts ...grpc.CallOption) (*ScheduleInternalOrderCommandResponse, error) {
+	out := new(ScheduleInternalOrderCommandResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/ScheduleInternalOrderCommand", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderCapturingServiceClient) InternalScheduleOrderCommand(ctx context.Context, in *InternalScheduleOrderCommandRequest, opts ...grpc.CallOption) (*InternalScheduleOrderCommandResponse, error) {
-	out := new(InternalScheduleOrderCommandResponse)
-	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/InternalScheduleOrderCommand", in, out, opts...)
+func (c *orderCapturingServiceClient) CaptureInternalOrderFromCart(ctx context.Context, in *CaptureInternalOrderFromCartRequest, opts ...grpc.CallOption) (*CaptureInternalOrderFromCartResponse, error) {
+	out := new(CaptureInternalOrderFromCartResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/CaptureInternalOrderFromCart", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderCapturingServiceClient) UpdateInternalShippingInfo(ctx context.Context, in *UpdateInternalShippingInfoRequest, opts ...grpc.CallOption) (*UpdateInternalShippingInfoResponse, error) {
+	out := new(UpdateInternalShippingInfoResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/UpdateInternalShippingInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderCapturingServiceClient) UpdateInternalBillingInfo(ctx context.Context, in *UpdateInternalBillingInfoRequest, opts ...grpc.CallOption) (*UpdateInternalBillingInfoResponse, error) {
+	out := new(UpdateInternalBillingInfoResponse)
+	err := c.cc.Invoke(ctx, "/orders.v3.OrderCapturingService/UpdateInternalBillingInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,25 +155,31 @@ func (c *orderCapturingServiceClient) InternalScheduleOrderCommand(ctx context.C
 // All implementations must embed UnimplementedOrderCapturingServiceServer
 // for forward compatibility
 type OrderCapturingServiceServer interface {
-	// PrivateCaptureOrder capture order data to create a new order, use for
+	// CaptureInternalOrder capture order data to create a new order, use for
 	// everyone
-	PrivateCaptureOrder(context.Context, *PrivateCaptureOrderRequest) (*PrivateCaptureOrderResponse, error)
-	// PrivateChangeCODPayment update current order to COD payment, for customer
-	PrivateChangeCODPayment(context.Context, *PrivateChangeCODPaymentRequest) (*PrivateChangeCODPaymentResponse, error)
-	// PrivateGetOrderByCode get single order by its code, for customer
-	PrivateGetOrderByCode(context.Context, *PrivateGetOrderByCodeRequest) (*PrivateGetOrderByCodeResponse, error)
-	// PrivateListOrders get list of order with filter, for customer
-	PrivateListOrders(context.Context, *PrivateListOrdersRequest) (*PrivateListOrdersResponse, error)
-	// PrivateCancelOrder cancel an order, for customer
-	PrivateCancelOrder(context.Context, *PrivateCancelOrderRequest) (*PrivateCancelOrderResponse, error)
-	// InternalRecordPaymentIPN receive payment of an order from Payment Service
-	InternalRecordPaymentIPN(context.Context, *InternalRecordPaymentIPNRequest) (*InternalRecordPaymentIPNResponse, error)
-	// InternalGetOrderByCode get single order by its code, for internal user
-	InternalGetOrderByCode(context.Context, *InternalGetOrderByCodeRequest) (*InternalGetOrderByCodeResponse, error)
-	// InternalListOrders get list of order with filter, for internal user
-	InternalListOrders(context.Context, *InternalListOrdersRequest) (*InternalListOrdersResponse, error)
-	// InternalScheduleOrderCommand queuing an order command for later executing
-	InternalScheduleOrderCommand(context.Context, *InternalScheduleOrderCommandRequest) (*InternalScheduleOrderCommandResponse, error)
+	CaptureInternalOrder(context.Context, *CaptureInternalOrderRequest) (*CaptureInternalOrderResponse, error)
+	// CreateInternalOrder create a new order, use for
+	// everyone
+	CreateInternalOrder(context.Context, *CreateInternalOrderRequest) (*CreateInternalOrderResponse, error)
+	// ChangeInternalCODPayment update current order to COD payment, for customer
+	ChangeInternalCODPayment(context.Context, *ChangeInternalCODPaymentRequest) (*ChangeInternalCODPaymentResponse, error)
+	// GetInternalOrderByCode get single order by its code, for customer
+	GetInternalOrderByCode(context.Context, *GetInternalOrderByCodeRequest) (*GetInternalOrderByCodeResponse, error)
+	// ListInternalOrders get list of order with filter, for customer
+	ListInternalOrders(context.Context, *ListInternalOrdersRequest) (*ListInternalOrdersResponse, error)
+	// CancelInternalOrder cancel an order, for customer
+	CancelInternalOrder(context.Context, *CancelInternalOrderRequest) (*CancelInternalOrderResponse, error)
+	// RecordInternalPaymentIPN receive payment of an order from Payment Service
+	RecordInternalPaymentIPN(context.Context, *RecordInternalPaymentIPNRequest) (*RecordInternalPaymentIPNResponse, error)
+	// ScheduleInternalOrderCommand queuing an order command for later executing
+	ScheduleInternalOrderCommand(context.Context, *ScheduleInternalOrderCommandRequest) (*ScheduleInternalOrderCommandResponse, error)
+	// CaptureInternalOrderFromCart capture order data to create a new order from
+	// cart service
+	CaptureInternalOrderFromCart(context.Context, *CaptureInternalOrderFromCartRequest) (*CaptureInternalOrderFromCartResponse, error)
+	// UpdateInternalShippingInfo update shipping info
+	UpdateInternalShippingInfo(context.Context, *UpdateInternalShippingInfoRequest) (*UpdateInternalShippingInfoResponse, error)
+	// UpdateInternalBillingInfo update billing info
+	UpdateInternalBillingInfo(context.Context, *UpdateInternalBillingInfoRequest) (*UpdateInternalBillingInfoResponse, error)
 	mustEmbedUnimplementedOrderCapturingServiceServer()
 }
 
@@ -157,32 +187,38 @@ type OrderCapturingServiceServer interface {
 type UnimplementedOrderCapturingServiceServer struct {
 }
 
-func (*UnimplementedOrderCapturingServiceServer) PrivateCaptureOrder(context.Context, *PrivateCaptureOrderRequest) (*PrivateCaptureOrderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateCaptureOrder not implemented")
+func (*UnimplementedOrderCapturingServiceServer) CaptureInternalOrder(context.Context, *CaptureInternalOrderRequest) (*CaptureInternalOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CaptureInternalOrder not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) PrivateChangeCODPayment(context.Context, *PrivateChangeCODPaymentRequest) (*PrivateChangeCODPaymentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateChangeCODPayment not implemented")
+func (*UnimplementedOrderCapturingServiceServer) CreateInternalOrder(context.Context, *CreateInternalOrderRequest) (*CreateInternalOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateInternalOrder not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) PrivateGetOrderByCode(context.Context, *PrivateGetOrderByCodeRequest) (*PrivateGetOrderByCodeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateGetOrderByCode not implemented")
+func (*UnimplementedOrderCapturingServiceServer) ChangeInternalCODPayment(context.Context, *ChangeInternalCODPaymentRequest) (*ChangeInternalCODPaymentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeInternalCODPayment not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) PrivateListOrders(context.Context, *PrivateListOrdersRequest) (*PrivateListOrdersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateListOrders not implemented")
+func (*UnimplementedOrderCapturingServiceServer) GetInternalOrderByCode(context.Context, *GetInternalOrderByCodeRequest) (*GetInternalOrderByCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInternalOrderByCode not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) PrivateCancelOrder(context.Context, *PrivateCancelOrderRequest) (*PrivateCancelOrderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrivateCancelOrder not implemented")
+func (*UnimplementedOrderCapturingServiceServer) ListInternalOrders(context.Context, *ListInternalOrdersRequest) (*ListInternalOrdersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInternalOrders not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) InternalRecordPaymentIPN(context.Context, *InternalRecordPaymentIPNRequest) (*InternalRecordPaymentIPNResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InternalRecordPaymentIPN not implemented")
+func (*UnimplementedOrderCapturingServiceServer) CancelInternalOrder(context.Context, *CancelInternalOrderRequest) (*CancelInternalOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelInternalOrder not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) InternalGetOrderByCode(context.Context, *InternalGetOrderByCodeRequest) (*InternalGetOrderByCodeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InternalGetOrderByCode not implemented")
+func (*UnimplementedOrderCapturingServiceServer) RecordInternalPaymentIPN(context.Context, *RecordInternalPaymentIPNRequest) (*RecordInternalPaymentIPNResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordInternalPaymentIPN not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) InternalListOrders(context.Context, *InternalListOrdersRequest) (*InternalListOrdersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InternalListOrders not implemented")
+func (*UnimplementedOrderCapturingServiceServer) ScheduleInternalOrderCommand(context.Context, *ScheduleInternalOrderCommandRequest) (*ScheduleInternalOrderCommandResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ScheduleInternalOrderCommand not implemented")
 }
-func (*UnimplementedOrderCapturingServiceServer) InternalScheduleOrderCommand(context.Context, *InternalScheduleOrderCommandRequest) (*InternalScheduleOrderCommandResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InternalScheduleOrderCommand not implemented")
+func (*UnimplementedOrderCapturingServiceServer) CaptureInternalOrderFromCart(context.Context, *CaptureInternalOrderFromCartRequest) (*CaptureInternalOrderFromCartResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CaptureInternalOrderFromCart not implemented")
+}
+func (*UnimplementedOrderCapturingServiceServer) UpdateInternalShippingInfo(context.Context, *UpdateInternalShippingInfoRequest) (*UpdateInternalShippingInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInternalShippingInfo not implemented")
+}
+func (*UnimplementedOrderCapturingServiceServer) UpdateInternalBillingInfo(context.Context, *UpdateInternalBillingInfoRequest) (*UpdateInternalBillingInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInternalBillingInfo not implemented")
 }
 func (*UnimplementedOrderCapturingServiceServer) mustEmbedUnimplementedOrderCapturingServiceServer() {
 }
@@ -191,164 +227,200 @@ func RegisterOrderCapturingServiceServer(s *grpc.Server, srv OrderCapturingServi
 	s.RegisterService(&_OrderCapturingService_serviceDesc, srv)
 }
 
-func _OrderCapturingService_PrivateCaptureOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrivateCaptureOrderRequest)
+func _OrderCapturingService_CaptureInternalOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CaptureInternalOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).PrivateCaptureOrder(ctx, in)
+		return srv.(OrderCapturingServiceServer).CaptureInternalOrder(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/PrivateCaptureOrder",
+		FullMethod: "/orders.v3.OrderCapturingService/CaptureInternalOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).PrivateCaptureOrder(ctx, req.(*PrivateCaptureOrderRequest))
+		return srv.(OrderCapturingServiceServer).CaptureInternalOrder(ctx, req.(*CaptureInternalOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_PrivateChangeCODPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrivateChangeCODPaymentRequest)
+func _OrderCapturingService_CreateInternalOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateInternalOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).PrivateChangeCODPayment(ctx, in)
+		return srv.(OrderCapturingServiceServer).CreateInternalOrder(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/PrivateChangeCODPayment",
+		FullMethod: "/orders.v3.OrderCapturingService/CreateInternalOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).PrivateChangeCODPayment(ctx, req.(*PrivateChangeCODPaymentRequest))
+		return srv.(OrderCapturingServiceServer).CreateInternalOrder(ctx, req.(*CreateInternalOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_PrivateGetOrderByCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrivateGetOrderByCodeRequest)
+func _OrderCapturingService_ChangeInternalCODPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeInternalCODPaymentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).PrivateGetOrderByCode(ctx, in)
+		return srv.(OrderCapturingServiceServer).ChangeInternalCODPayment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/PrivateGetOrderByCode",
+		FullMethod: "/orders.v3.OrderCapturingService/ChangeInternalCODPayment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).PrivateGetOrderByCode(ctx, req.(*PrivateGetOrderByCodeRequest))
+		return srv.(OrderCapturingServiceServer).ChangeInternalCODPayment(ctx, req.(*ChangeInternalCODPaymentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_PrivateListOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrivateListOrdersRequest)
+func _OrderCapturingService_GetInternalOrderByCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInternalOrderByCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).PrivateListOrders(ctx, in)
+		return srv.(OrderCapturingServiceServer).GetInternalOrderByCode(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/PrivateListOrders",
+		FullMethod: "/orders.v3.OrderCapturingService/GetInternalOrderByCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).PrivateListOrders(ctx, req.(*PrivateListOrdersRequest))
+		return srv.(OrderCapturingServiceServer).GetInternalOrderByCode(ctx, req.(*GetInternalOrderByCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_PrivateCancelOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PrivateCancelOrderRequest)
+func _OrderCapturingService_ListInternalOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInternalOrdersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).PrivateCancelOrder(ctx, in)
+		return srv.(OrderCapturingServiceServer).ListInternalOrders(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/PrivateCancelOrder",
+		FullMethod: "/orders.v3.OrderCapturingService/ListInternalOrders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).PrivateCancelOrder(ctx, req.(*PrivateCancelOrderRequest))
+		return srv.(OrderCapturingServiceServer).ListInternalOrders(ctx, req.(*ListInternalOrdersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_InternalRecordPaymentIPN_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InternalRecordPaymentIPNRequest)
+func _OrderCapturingService_CancelInternalOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelInternalOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).InternalRecordPaymentIPN(ctx, in)
+		return srv.(OrderCapturingServiceServer).CancelInternalOrder(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/InternalRecordPaymentIPN",
+		FullMethod: "/orders.v3.OrderCapturingService/CancelInternalOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).InternalRecordPaymentIPN(ctx, req.(*InternalRecordPaymentIPNRequest))
+		return srv.(OrderCapturingServiceServer).CancelInternalOrder(ctx, req.(*CancelInternalOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_InternalGetOrderByCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InternalGetOrderByCodeRequest)
+func _OrderCapturingService_RecordInternalPaymentIPN_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordInternalPaymentIPNRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).InternalGetOrderByCode(ctx, in)
+		return srv.(OrderCapturingServiceServer).RecordInternalPaymentIPN(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/InternalGetOrderByCode",
+		FullMethod: "/orders.v3.OrderCapturingService/RecordInternalPaymentIPN",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).InternalGetOrderByCode(ctx, req.(*InternalGetOrderByCodeRequest))
+		return srv.(OrderCapturingServiceServer).RecordInternalPaymentIPN(ctx, req.(*RecordInternalPaymentIPNRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_InternalListOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InternalListOrdersRequest)
+func _OrderCapturingService_ScheduleInternalOrderCommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ScheduleInternalOrderCommandRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).InternalListOrders(ctx, in)
+		return srv.(OrderCapturingServiceServer).ScheduleInternalOrderCommand(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/InternalListOrders",
+		FullMethod: "/orders.v3.OrderCapturingService/ScheduleInternalOrderCommand",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).InternalListOrders(ctx, req.(*InternalListOrdersRequest))
+		return srv.(OrderCapturingServiceServer).ScheduleInternalOrderCommand(ctx, req.(*ScheduleInternalOrderCommandRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderCapturingService_InternalScheduleOrderCommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InternalScheduleOrderCommandRequest)
+func _OrderCapturingService_CaptureInternalOrderFromCart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CaptureInternalOrderFromCartRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderCapturingServiceServer).InternalScheduleOrderCommand(ctx, in)
+		return srv.(OrderCapturingServiceServer).CaptureInternalOrderFromCart(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orders.v3.OrderCapturingService/InternalScheduleOrderCommand",
+		FullMethod: "/orders.v3.OrderCapturingService/CaptureInternalOrderFromCart",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderCapturingServiceServer).InternalScheduleOrderCommand(ctx, req.(*InternalScheduleOrderCommandRequest))
+		return srv.(OrderCapturingServiceServer).CaptureInternalOrderFromCart(ctx, req.(*CaptureInternalOrderFromCartRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderCapturingService_UpdateInternalShippingInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInternalShippingInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderCapturingServiceServer).UpdateInternalShippingInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/orders.v3.OrderCapturingService/UpdateInternalShippingInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderCapturingServiceServer).UpdateInternalShippingInfo(ctx, req.(*UpdateInternalShippingInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderCapturingService_UpdateInternalBillingInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInternalBillingInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderCapturingServiceServer).UpdateInternalBillingInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/orders.v3.OrderCapturingService/UpdateInternalBillingInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderCapturingServiceServer).UpdateInternalBillingInfo(ctx, req.(*UpdateInternalBillingInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -358,40 +430,48 @@ var _OrderCapturingService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*OrderCapturingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "PrivateCaptureOrder",
-			Handler:    _OrderCapturingService_PrivateCaptureOrder_Handler,
+			MethodName: "CaptureInternalOrder",
+			Handler:    _OrderCapturingService_CaptureInternalOrder_Handler,
 		},
 		{
-			MethodName: "PrivateChangeCODPayment",
-			Handler:    _OrderCapturingService_PrivateChangeCODPayment_Handler,
+			MethodName: "CreateInternalOrder",
+			Handler:    _OrderCapturingService_CreateInternalOrder_Handler,
 		},
 		{
-			MethodName: "PrivateGetOrderByCode",
-			Handler:    _OrderCapturingService_PrivateGetOrderByCode_Handler,
+			MethodName: "ChangeInternalCODPayment",
+			Handler:    _OrderCapturingService_ChangeInternalCODPayment_Handler,
 		},
 		{
-			MethodName: "PrivateListOrders",
-			Handler:    _OrderCapturingService_PrivateListOrders_Handler,
+			MethodName: "GetInternalOrderByCode",
+			Handler:    _OrderCapturingService_GetInternalOrderByCode_Handler,
 		},
 		{
-			MethodName: "PrivateCancelOrder",
-			Handler:    _OrderCapturingService_PrivateCancelOrder_Handler,
+			MethodName: "ListInternalOrders",
+			Handler:    _OrderCapturingService_ListInternalOrders_Handler,
 		},
 		{
-			MethodName: "InternalRecordPaymentIPN",
-			Handler:    _OrderCapturingService_InternalRecordPaymentIPN_Handler,
+			MethodName: "CancelInternalOrder",
+			Handler:    _OrderCapturingService_CancelInternalOrder_Handler,
 		},
 		{
-			MethodName: "InternalGetOrderByCode",
-			Handler:    _OrderCapturingService_InternalGetOrderByCode_Handler,
+			MethodName: "RecordInternalPaymentIPN",
+			Handler:    _OrderCapturingService_RecordInternalPaymentIPN_Handler,
 		},
 		{
-			MethodName: "InternalListOrders",
-			Handler:    _OrderCapturingService_InternalListOrders_Handler,
+			MethodName: "ScheduleInternalOrderCommand",
+			Handler:    _OrderCapturingService_ScheduleInternalOrderCommand_Handler,
 		},
 		{
-			MethodName: "InternalScheduleOrderCommand",
-			Handler:    _OrderCapturingService_InternalScheduleOrderCommand_Handler,
+			MethodName: "CaptureInternalOrderFromCart",
+			Handler:    _OrderCapturingService_CaptureInternalOrderFromCart_Handler,
+		},
+		{
+			MethodName: "UpdateInternalShippingInfo",
+			Handler:    _OrderCapturingService_UpdateInternalShippingInfo_Handler,
+		},
+		{
+			MethodName: "UpdateInternalBillingInfo",
+			Handler:    _OrderCapturingService_UpdateInternalBillingInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

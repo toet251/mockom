@@ -31,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 
-func request_OrderCapturingService_PrivateCaptureOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateCaptureOrderRequest
+func request_OrderCapturingService_CaptureInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CaptureInternalOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -43,13 +43,13 @@ func request_OrderCapturingService_PrivateCaptureOrder_0(ctx context.Context, ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.PrivateCaptureOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.CaptureInternalOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_PrivateCaptureOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateCaptureOrderRequest
+func local_request_OrderCapturingService_CaptureInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CaptureInternalOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -60,13 +60,47 @@ func local_request_OrderCapturingService_PrivateCaptureOrder_0(ctx context.Conte
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.PrivateCaptureOrder(ctx, &protoReq)
+	msg, err := server.CaptureInternalOrder(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_OrderCapturingService_PrivateChangeCODPayment_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateChangeCODPaymentRequest
+func request_OrderCapturingService_CreateInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateInternalOrderRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateInternalOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrderCapturingService_CreateInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateInternalOrderRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateInternalOrder(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrderCapturingService_ChangeInternalCODPayment_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ChangeInternalCODPaymentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -95,13 +129,13 @@ func request_OrderCapturingService_PrivateChangeCODPayment_0(ctx context.Context
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := client.PrivateChangeCODPayment(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ChangeInternalCODPayment(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_PrivateChangeCODPayment_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateChangeCODPaymentRequest
+func local_request_OrderCapturingService_ChangeInternalCODPayment_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ChangeInternalCODPaymentRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -130,13 +164,13 @@ func local_request_OrderCapturingService_PrivateChangeCODPayment_0(ctx context.C
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := server.PrivateChangeCODPayment(ctx, &protoReq)
+	msg, err := server.ChangeInternalCODPayment(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_OrderCapturingService_PrivateGetOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateGetOrderByCodeRequest
+func request_OrderCapturingService_GetInternalOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetInternalOrderByCodeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -157,13 +191,13 @@ func request_OrderCapturingService_PrivateGetOrderByCode_0(ctx context.Context, 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := client.PrivateGetOrderByCode(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetInternalOrderByCode(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_PrivateGetOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateGetOrderByCodeRequest
+func local_request_OrderCapturingService_GetInternalOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetInternalOrderByCodeRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -184,49 +218,49 @@ func local_request_OrderCapturingService_PrivateGetOrderByCode_0(ctx context.Con
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := server.PrivateGetOrderByCode(ctx, &protoReq)
+	msg, err := server.GetInternalOrderByCode(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 var (
-	filter_OrderCapturingService_PrivateListOrders_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_OrderCapturingService_ListInternalOrders_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_OrderCapturingService_PrivateListOrders_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateListOrdersRequest
+func request_OrderCapturingService_ListInternalOrders_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListInternalOrdersRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_PrivateListOrders_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_ListInternalOrders_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.PrivateListOrders(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListInternalOrders(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_PrivateListOrders_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateListOrdersRequest
+func local_request_OrderCapturingService_ListInternalOrders_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListInternalOrdersRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_PrivateListOrders_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_ListInternalOrders_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.PrivateListOrders(ctx, &protoReq)
+	msg, err := server.ListInternalOrders(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_OrderCapturingService_PrivateCancelOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateCancelOrderRequest
+func request_OrderCapturingService_CancelInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelInternalOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -255,13 +289,13 @@ func request_OrderCapturingService_PrivateCancelOrder_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := client.PrivateCancelOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.CancelInternalOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_PrivateCancelOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PrivateCancelOrderRequest
+func local_request_OrderCapturingService_CancelInternalOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CancelInternalOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -290,13 +324,13 @@ func local_request_OrderCapturingService_PrivateCancelOrder_0(ctx context.Contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
 	}
 
-	msg, err := server.PrivateCancelOrder(ctx, &protoReq)
+	msg, err := server.CancelInternalOrder(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_OrderCapturingService_InternalRecordPaymentIPN_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalRecordPaymentIPNRequest
+func request_OrderCapturingService_RecordInternalPaymentIPN_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RecordInternalPaymentIPNRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -307,13 +341,13 @@ func request_OrderCapturingService_InternalRecordPaymentIPN_0(ctx context.Contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.InternalRecordPaymentIPN(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.RecordInternalPaymentIPN(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_InternalRecordPaymentIPN_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalRecordPaymentIPNRequest
+func local_request_OrderCapturingService_RecordInternalPaymentIPN_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq RecordInternalPaymentIPNRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -324,14 +358,90 @@ func local_request_OrderCapturingService_InternalRecordPaymentIPN_0(ctx context.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.InternalRecordPaymentIPN(ctx, &protoReq)
+	msg, err := server.RecordInternalPaymentIPN(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_OrderCapturingService_InternalGetOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalGetOrderByCodeRequest
+func request_OrderCapturingService_ScheduleInternalOrderCommand_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ScheduleInternalOrderCommandRequest
 	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ScheduleInternalOrderCommand(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrderCapturingService_ScheduleInternalOrderCommand_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ScheduleInternalOrderCommandRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ScheduleInternalOrderCommand(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrderCapturingService_CaptureInternalOrderFromCart_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CaptureInternalOrderFromCartRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CaptureInternalOrderFromCart(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_OrderCapturingService_CaptureInternalOrderFromCart_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CaptureInternalOrderFromCartRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CaptureInternalOrderFromCart(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_OrderCapturingService_UpdateInternalShippingInfo_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateInternalShippingInfoRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	var (
 		val string
@@ -340,25 +450,33 @@ func request_OrderCapturingService_InternalGetOrderByCode_0(ctx context.Context,
 		_   = err
 	)
 
-	val, ok = pathParams["order_code"]
+	val, ok = pathParams["code"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_code")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
 	}
 
-	protoReq.OrderCode, err = runtime.String(val)
+	protoReq.Code, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 
-	msg, err := client.InternalGetOrderByCode(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateInternalShippingInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_InternalGetOrderByCode_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalGetOrderByCodeRequest
+func local_request_OrderCapturingService_UpdateInternalShippingInfo_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateInternalShippingInfoRequest
 	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	var (
 		val string
@@ -367,60 +485,24 @@ func local_request_OrderCapturingService_InternalGetOrderByCode_0(ctx context.Co
 		_   = err
 	)
 
-	val, ok = pathParams["order_code"]
+	val, ok = pathParams["code"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_code")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
 	}
 
-	protoReq.OrderCode, err = runtime.String(val)
+	protoReq.Code, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_code", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 
-	msg, err := server.InternalGetOrderByCode(ctx, &protoReq)
+	msg, err := server.UpdateInternalShippingInfo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-var (
-	filter_OrderCapturingService_InternalListOrders_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
-func request_OrderCapturingService_InternalListOrders_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalListOrdersRequest
-	var metadata runtime.ServerMetadata
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_InternalListOrders_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.InternalListOrders(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_OrderCapturingService_InternalListOrders_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalListOrdersRequest
-	var metadata runtime.ServerMetadata
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderCapturingService_InternalListOrders_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := server.InternalListOrders(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_OrderCapturingService_InternalScheduleOrderCommand_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalScheduleOrderCommandRequest
+func request_OrderCapturingService_UpdateInternalBillingInfo_0(ctx context.Context, marshaler runtime.Marshaler, client OrderCapturingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateInternalBillingInfoRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -431,13 +513,31 @@ func request_OrderCapturingService_InternalScheduleOrderCommand_0(ctx context.Co
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.InternalScheduleOrderCommand(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["code"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
+	}
+
+	protoReq.Code, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
+	}
+
+	msg, err := client.UpdateInternalBillingInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_OrderCapturingService_InternalScheduleOrderCommand_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq InternalScheduleOrderCommandRequest
+func local_request_OrderCapturingService_UpdateInternalBillingInfo_0(ctx context.Context, marshaler runtime.Marshaler, server OrderCapturingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateInternalBillingInfoRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -448,7 +548,25 @@ func local_request_OrderCapturingService_InternalScheduleOrderCommand_0(ctx cont
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.InternalScheduleOrderCommand(ctx, &protoReq)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["code"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
+	}
+
+	protoReq.Code, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
+	}
+
+	msg, err := server.UpdateInternalBillingInfo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -459,7 +577,7 @@ func local_request_OrderCapturingService_InternalScheduleOrderCommand_0(ctx cont
 // Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterOrderCapturingServiceHandlerFromEndpoint instead.
 func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server OrderCapturingServiceServer) error {
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateCaptureOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CaptureInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -468,18 +586,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_PrivateCaptureOrder_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_CaptureInternalOrder_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateCaptureOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CaptureInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateChangeCODPayment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CreateInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -488,18 +606,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_PrivateChangeCODPayment_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_CreateInternalOrder_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateChangeCODPayment_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CreateInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_PrivateGetOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_ChangeInternalCODPayment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -508,18 +626,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_PrivateGetOrderByCode_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_ChangeInternalCODPayment_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateGetOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ChangeInternalCODPayment_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_PrivateListOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_OrderCapturingService_GetInternalOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -528,18 +646,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_PrivateListOrders_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_GetInternalOrderByCode_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateListOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_GetInternalOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateCancelOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_OrderCapturingService_ListInternalOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -548,18 +666,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_PrivateCancelOrder_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_ListInternalOrders_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateCancelOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ListInternalOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_InternalRecordPaymentIPN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CancelInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -568,18 +686,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_InternalRecordPaymentIPN_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_CancelInternalOrder_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalRecordPaymentIPN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CancelInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_InternalGetOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_RecordInternalPaymentIPN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -588,18 +706,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_InternalGetOrderByCode_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_RecordInternalPaymentIPN_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalGetOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_RecordInternalPaymentIPN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_InternalListOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_ScheduleInternalOrderCommand_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -608,18 +726,18 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_InternalListOrders_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_ScheduleInternalOrderCommand_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalListOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ScheduleInternalOrderCommand_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_InternalScheduleOrderCommand_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CaptureInternalOrderFromCart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -628,14 +746,54 @@ func RegisterOrderCapturingServiceHandlerServer(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_OrderCapturingService_InternalScheduleOrderCommand_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_OrderCapturingService_CaptureInternalOrderFromCart_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalScheduleOrderCommand_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CaptureInternalOrderFromCart_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrderCapturingService_UpdateInternalShippingInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrderCapturingService_UpdateInternalShippingInfo_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrderCapturingService_UpdateInternalShippingInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrderCapturingService_UpdateInternalBillingInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrderCapturingService_UpdateInternalBillingInfo_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrderCapturingService_UpdateInternalBillingInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -680,7 +838,7 @@ func RegisterOrderCapturingServiceHandler(ctx context.Context, mux *runtime.Serv
 // "OrderCapturingServiceClient" to call the correct interceptors.
 func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client OrderCapturingServiceClient) error {
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateCaptureOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CaptureInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -689,18 +847,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_PrivateCaptureOrder_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_CaptureInternalOrder_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateCaptureOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CaptureInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateChangeCODPayment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CreateInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -709,18 +867,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_PrivateChangeCODPayment_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_CreateInternalOrder_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateChangeCODPayment_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CreateInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_PrivateGetOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_ChangeInternalCODPayment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -729,18 +887,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_PrivateGetOrderByCode_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_ChangeInternalCODPayment_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateGetOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ChangeInternalCODPayment_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_PrivateListOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_OrderCapturingService_GetInternalOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -749,18 +907,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_PrivateListOrders_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_GetInternalOrderByCode_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateListOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_GetInternalOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_PrivateCancelOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_OrderCapturingService_ListInternalOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -769,18 +927,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_PrivateCancelOrder_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_ListInternalOrders_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_PrivateCancelOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ListInternalOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_InternalRecordPaymentIPN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CancelInternalOrder_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -789,18 +947,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_InternalRecordPaymentIPN_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_CancelInternalOrder_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalRecordPaymentIPN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CancelInternalOrder_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_InternalGetOrderByCode_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_RecordInternalPaymentIPN_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -809,18 +967,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_InternalGetOrderByCode_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_RecordInternalPaymentIPN_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalGetOrderByCode_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_RecordInternalPaymentIPN_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_OrderCapturingService_InternalListOrders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_ScheduleInternalOrderCommand_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -829,18 +987,18 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_InternalListOrders_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_ScheduleInternalOrderCommand_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalListOrders_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_ScheduleInternalOrderCommand_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_OrderCapturingService_InternalScheduleOrderCommand_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_OrderCapturingService_CaptureInternalOrderFromCart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -849,14 +1007,54 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_OrderCapturingService_InternalScheduleOrderCommand_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_OrderCapturingService_CaptureInternalOrderFromCart_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_OrderCapturingService_InternalScheduleOrderCommand_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_OrderCapturingService_CaptureInternalOrderFromCart_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrderCapturingService_UpdateInternalShippingInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrderCapturingService_UpdateInternalShippingInfo_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrderCapturingService_UpdateInternalShippingInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_OrderCapturingService_UpdateInternalBillingInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrderCapturingService_UpdateInternalBillingInfo_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_OrderCapturingService_UpdateInternalBillingInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -864,41 +1062,49 @@ func RegisterOrderCapturingServiceHandlerClient(ctx context.Context, mux *runtim
 }
 
 var (
-	pattern_OrderCapturingService_PrivateCaptureOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "private", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_CaptureInternalOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "internal", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_PrivateChangeCODPayment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "private", "v3", "orders", "order_code", "cod-payments"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_CreateInternalOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "internal", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_PrivateGetOrderByCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "private", "v3", "orders", "order_code"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_ChangeInternalCODPayment_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "order_code", "cod-payments"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_PrivateListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "private", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_GetInternalOrderByCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "internal", "v3", "orders", "order_code"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_PrivateCancelOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "private", "v3", "orders", "order_code", "cancel"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_ListInternalOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "internal", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_InternalRecordPaymentIPN_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "payments", "ipn"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_CancelInternalOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "order_code", "cancel"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_InternalGetOrderByCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "internal", "v3", "orders", "order_code"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_RecordInternalPaymentIPN_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "payments", "ipn"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_InternalListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "internal", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_ScheduleInternalOrderCommand_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "internal", "schedule"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderCapturingService_InternalScheduleOrderCommand_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "internal", "schedule"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderCapturingService_CaptureInternalOrderFromCart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "internal", "v3", "orders"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_OrderCapturingService_UpdateInternalShippingInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "code", "shipping"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_OrderCapturingService_UpdateInternalBillingInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4, 2, 5}, []string{"api", "internal", "v3", "orders", "code", "billing"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_OrderCapturingService_PrivateCaptureOrder_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_CaptureInternalOrder_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_PrivateChangeCODPayment_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_CreateInternalOrder_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_PrivateGetOrderByCode_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_ChangeInternalCODPayment_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_PrivateListOrders_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_GetInternalOrderByCode_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_PrivateCancelOrder_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_ListInternalOrders_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_InternalRecordPaymentIPN_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_CancelInternalOrder_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_InternalGetOrderByCode_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_RecordInternalPaymentIPN_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_InternalListOrders_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_ScheduleInternalOrderCommand_0 = runtime.ForwardResponseMessage
 
-	forward_OrderCapturingService_InternalScheduleOrderCommand_0 = runtime.ForwardResponseMessage
+	forward_OrderCapturingService_CaptureInternalOrderFromCart_0 = runtime.ForwardResponseMessage
+
+	forward_OrderCapturingService_UpdateInternalShippingInfo_0 = runtime.ForwardResponseMessage
+
+	forward_OrderCapturingService_UpdateInternalBillingInfo_0 = runtime.ForwardResponseMessage
 )
